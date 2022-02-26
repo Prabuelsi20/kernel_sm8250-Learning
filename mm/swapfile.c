@@ -6,6 +6,7 @@
  */
 
 #include <linux/mm.h>
+#include <linux/mm_inline.h>
 #include <linux/sched/mm.h>
 #include <linux/sched/task.h>
 #include <linux/hugetlb.h>
@@ -1857,7 +1858,8 @@ static int unuse_pte(struct vm_area_struct *vma, pmd_t *pmd,
 	 * Move the page to the active list so it is not
 	 * immediately swapped out again after swapon.
 	 */
-	activate_page(page);
+	if (!lru_gen_enabled())
+		activate_page(page);
 out:
 	pte_unmap_unlock(pte, ptl);
 out_nolock:
@@ -2032,7 +2034,21 @@ static int unuse_mm(struct mm_struct *mm, unsigned int type,
 	struct vm_area_struct *vma;
 	int ret = 0;
 
+<<<<<<< HEAD
 	down_read(&mm->mmap_sem);
+=======
+	if (!down_read_trylock(&mm->mmap_sem)) {
+		/*
+		 * Activate page so shrink_inactive_list is unlikely to unmap
+		 * its ptes while lock is dropped, so swapoff can make progress.
+		 */
+		if (!lru_gen_enabled())
+			activate_page(page);
+		unlock_page(page);
+		down_read(&mm->mmap_sem);
+		lock_page(page);
+	}
+>>>>>>> 4a053e3d13b4 (FROMLIST: mm: multi-gen LRU: groundwork)
 	for (vma = mm->mmap; vma; vma = vma->vm_next) {
 		if (vma->anon_vma) {
 			ret = unuse_vma(vma, type, frontswap,
