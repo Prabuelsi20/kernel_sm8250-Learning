@@ -919,7 +919,11 @@ struct mem_cgroup *mem_cgroup_iter(struct mem_cgroup *root,
 				   struct mem_cgroup *prev,
 				   struct mem_cgroup_reclaim_cookie *reclaim)
 {
+<<<<<<< HEAD
 	struct mem_cgroup_reclaim_iter *iter;
+=======
+	struct mem_cgroup_reclaim_iter *iter = NULL;
+>>>>>>> 4933c69a386a (mm/memcontrol: fix build with removed uninitialized_var macro)
 	struct cgroup_subsys_state *css = NULL;
 	struct mem_cgroup *memcg = NULL;
 	struct mem_cgroup *pos = NULL;
