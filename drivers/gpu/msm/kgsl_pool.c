@@ -43,6 +43,12 @@ static struct kgsl_page_pool kgsl_pools[KGSL_MAX_POOLS];
 static int kgsl_num_pools;
 static int kgsl_pool_max_pages;
 
+static int kgsl_skip_zeroing;
+
+module_param_named(kgsl_skip_zeroing, kgsl_skip_zeroing, int, 0644);
+MODULE_PARM_DESC(kgsl_skip_zeroing,
+                 "Skip zeroing of KGSL pool pages");
+
 
 /* Returns KGSL pool corresponding to input page order*/
 static struct kgsl_page_pool *
@@ -337,7 +343,8 @@ int kgsl_pool_alloc_page(int *page_size, struct page **pages,
 	}
 
 done:
-	kgsl_zero_page(page, order, dev);
+        if (!kgsl_skip_zeroing)
+                kgsl_zero_page(page, order, dev);
 	for (j = 0; j < (*page_size >> PAGE_SHIFT); j++) {
 		p = nth_page(page, j);
 		pages[pcount] = p;
