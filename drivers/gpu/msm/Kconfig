@@ -23,6 +23,19 @@ config QCOM_ADRENO_DEFAULT_GOVERNOR
 	default "simple_ondemand"
 	depends on QCOM_KGSL
 
+config QCOM_KGSL_SKIP_POOL_ZEROING
+        bool "Skip KGSL pool page zeroing"
+        depends on QCOM_KGSL
+        default n
+        help
+          Skip zeroing pages before they are returned by the KGSL
+          page pool allocator.
+
+          This can reduce allocation overhead in workloads that
+          frequently allocate and recycle KGSL pages, but it may
+          expose stale page contents. Enable only if the security
+          implications are understood.
+
 config QCOM_KGSL_IOMMU
 	bool
 	default y if QCOM_KGSL && (MSM_IOMMU || ARM_SMMU)

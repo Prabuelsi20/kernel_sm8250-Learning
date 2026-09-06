@@ -337,7 +337,9 @@ int kgsl_pool_alloc_page(int *page_size, struct page **pages,
 	}
 
 done:
+#ifndef CONFIG_QCOM_KGSL_SKIP_POOL_ZEROING
 	kgsl_zero_page(page, order, dev);
+#endif
 	for (j = 0; j < (*page_size >> PAGE_SHIFT); j++) {
 		p = nth_page(page, j);
 		pages[pcount] = p;
