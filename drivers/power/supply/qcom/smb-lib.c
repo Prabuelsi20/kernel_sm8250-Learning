@@ -2,6 +2,7 @@
 /* Copyright (c) 2016-2020 The Linux Foundation. All rights reserved.
  */
 
+#include <linux/fd_attributes.h>
 #include <linux/device.h>
 #include <linux/regmap.h>
 #include <linux/delay.h>
@@ -2866,6 +2867,11 @@ static int smblib_handle_usb_current(struct smb_charger *chg,
 		rc = vote(chg->usb_icl_votable, USB_PSY_VOTER,
 					true, USBIN_100MA);
 	} else {
+		if (READ_ONCE(fd_data.force_fast_charge) &&
+			chg->real_charger_type == POWER_SUPPLY_TYPE_USB &&
+			usb_current == USBIN_500MA)
+			usb_current = USBIN_900MA;
+
 		rc = vote(chg->usb_icl_votable, USB_PSY_VOTER,
 					true, usb_current);
 	}
