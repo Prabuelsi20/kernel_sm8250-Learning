@@ -4,6 +4,13 @@
 
 menu "Misc devices"
 
+config FD_ATTRIBUTES
+        bool "FD kernel runtime attributes"
+        default y
+        depends on SYSFS
+        help
+          Enable runtime attributes for the FD kernel.
+
 config SPI_XIAOMI_TP
         bool
         depends on SPI
