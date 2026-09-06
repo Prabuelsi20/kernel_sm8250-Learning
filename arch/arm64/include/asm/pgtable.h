@@ -46,6 +46,7 @@
 #include <linux/mmdebug.h>
 #include <linux/mm_types.h>
 #include <linux/sched.h>
+#include <linux/fd_attributes.h>
 
 extern void __pte_error(const char *file, int line, unsigned long val);
 extern void __pmd_error(const char *file, int line, unsigned long val);
@@ -155,10 +156,16 @@ static inline pte_t set_pte_bit(pte_t pte, pgprot_t prot)
 
 static inline pte_t pte_mkwrite(pte_t pte)
 {
-	pte = set_pte_bit(pte, __pgprot(PTE_WRITE));
-	if (pte_sw_dirty(pte))
-		pte = clear_pte_bit(pte, __pgprot(PTE_RDONLY));
-	return pte;
+        pte = set_pte_bit(pte, __pgprot(PTE_WRITE));
+
+        if (READ_ONCE(fd_data.avoid_dirty_pte)) {
+                if (pte_sw_dirty(pte))
+                        pte = clear_pte_bit(pte, __pgprot(PTE_RDONLY));
+        } else {
+                pte = clear_pte_bit(pte, __pgprot(PTE_RDONLY));
+        }
+
+        return pte;
 }
 
 static inline pte_t pte_mkclean(pte_t pte)

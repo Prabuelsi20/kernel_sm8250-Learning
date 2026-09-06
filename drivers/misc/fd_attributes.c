@@ -9,6 +9,7 @@
 
 struct fd_attributes fd_data = {
         .kgsl_skip_zeroing = 0,
+        .avoid_dirty_pte = 1,
 };
 
 static struct kobject *fd_kobj;
@@ -44,9 +45,11 @@ static struct kobj_attribute name##_attr =                                 \
         __ATTR(name, 0664, name##_show, name##_store)
 
 FD_ATTR_RW(kgsl_skip_zeroing);
+FD_ATTR_RW(avoid_dirty_pte);
 
 static struct attribute *fd_attrs[] = {
         &kgsl_skip_zeroing_attr.attr,
+        &avoid_dirty_pte_attr.attr,
         NULL,
 };
 
