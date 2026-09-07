@@ -1,22 +1,16 @@
-From a93e201bdbb2eb9d18564ea5393b5ce59831235e Mon Sep 17 00:00:00 2001
-From: Muhammad Guntur <mochtur@gmail.com>
-Date: Tue, 19 Aug 2025 14:58:14 +0700
-Subject: [PATCH] Revert "gpu: kona-v2: Undervolt and rework frequency steps"
-
-This reverts commit 6886a0ba5c6e8328be87d850eda12652be55e3c5.
----
- .../boot/dts/vendor/qcom/kona-v2-gpu.dtsi     | 268 +++++++++---------
- 1 file changed, 134 insertions(+), 134 deletions(-)
-
 diff --git a/arch/arm64/boot/dts/vendor/qcom/kona-v2-gpu.dtsi b/arch/arm64/boot/dts/vendor/qcom/kona-v2-gpu.dtsi
-index ab90465e697f..e8850f43ac49 100755
+index 4daab18e630e..e8850f43ac49 100755
 --- a/arch/arm64/boot/dts/vendor/qcom/kona-v2-gpu.dtsi
 +++ b/arch/arm64/boot/dts/vendor/qcom/kona-v2-gpu.dtsi
-@@ -10,37 +10,37 @@
+@@ -8,39 +8,39 @@
+ 	gpu_opp_table_v2: gpu-opp-table_v2 {
+ 		compatible = "operating-points-v2";
  
- 		opp-670000000 {
- 			opp-hz = /bits/ 64 <670000000>;
+-		opp-683000000 {
+-			opp-hz = /bits/ 64 <683000000>;
 -			opp-microvolt = <225>;
++		opp-670000000 {
++			opp-hz = /bits/ 64 <670000000>;
 +			opp-microvolt = <RPMH_REGULATOR_LEVEL_NOM_L1>;
  		};
  
@@ -67,6 +61,15 @@ index ab90465e697f..e8850f43ac49 100755
  		};
  	};
  };
+@@ -69,7 +69,7 @@
+ 
+ 			qcom,gpu-pwrlevel@0 {
+ 				reg = <0>;
+-				qcom,gpu-freq = <683000000>;
++				qcom,gpu-freq = <670000000>;
+ 				qcom,bus-freq-ddr7 = <11>;
+ 				qcom,bus-min-ddr7 = <11>;
+ 				qcom,bus-max-ddr7 = <11>;
 @@ -97,13 +97,13 @@
  
  			qcom,gpu-pwrlevel@2 {
@@ -163,6 +166,15 @@ index ab90465e697f..e8850f43ac49 100755
  
  				qcom,acd-level = <0xa02b5ffd>;
  			};
+@@ -183,7 +183,7 @@
+ 
+ 			qcom,gpu-pwrlevel@0 {
+ 				reg = <0>;
+-				qcom,gpu-freq = <683000000>;
++				qcom,gpu-freq = <670000000>;
+ 				qcom,bus-freq-ddr7 = <11>;
+ 				qcom,bus-min-ddr7 = <11>;
+ 				qcom,bus-max-ddr7 = <11>;
 @@ -211,13 +211,13 @@
  
  			qcom,gpu-pwrlevel@2 {
@@ -259,6 +271,15 @@ index ab90465e697f..e8850f43ac49 100755
  
  				qcom,acd-level = <0xa02b5ffd>;
  			};
+@@ -382,7 +382,7 @@
+ 
+ 			qcom,gpu-pwrlevel@0 {
+ 				reg = <0>;
+-				qcom,gpu-freq = <683000000>;
++				qcom,gpu-freq = <670000000>;
+ 				qcom,bus-freq-ddr7 = <11>;
+ 				qcom,bus-min-ddr7 = <11>;
+ 				qcom,bus-max-ddr7 = <11>;
 @@ -410,13 +410,13 @@
  
  			qcom,gpu-pwrlevel@2 {
@@ -355,6 +376,15 @@ index ab90465e697f..e8850f43ac49 100755
  
  				qcom,acd-level = <0xa02b5ffd>;
  			};
+@@ -496,7 +496,7 @@
+ 
+ 			qcom,gpu-pwrlevel@0 {
+ 				reg = <0>;
+-				qcom,gpu-freq = <683000000>;
++				qcom,gpu-freq = <670000000>;
+ 				qcom,bus-freq-ddr7 = <11>;
+ 				qcom,bus-min-ddr7 = <11>;
+ 				qcom,bus-max-ddr7 = <11>;
 @@ -524,13 +524,13 @@
  
  			qcom,gpu-pwrlevel@2 {
@@ -452,6 +482,3 @@ index ab90465e697f..e8850f43ac49 100755
  
  				qcom,acd-level = <0xa02b5ffd>;
  			};
--- 
-2.47.1.windows.1
-
