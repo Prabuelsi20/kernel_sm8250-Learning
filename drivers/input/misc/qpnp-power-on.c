@@ -2504,6 +2504,17 @@ static int debug_pon_on_off_reg(struct qpnp_pon *pon)
 	snprintf(reg, sizeof(reg), "0x%x:0x%x ", QPNP_PON_PS_HOLD_RST_CTL(pon), pon_sts);
 	strlcat(str_buf, reg, sizeof(str_buf));
 
+        rc = regmap_read(pon->regmap, QPNP_PON_SOFT_RB_SPARE(pon), &pon_sts);
+        if (rc) {
+                dev_err(pon->dev,
+                                "Unable to read PON_SOFT_RB_SPARE reg rc: %d\n",
+                                rc);
+                return rc;
+        }
+        snprintf(reg, sizeof(reg), "0x%x:0x%x ",
+                 QPNP_PON_SOFT_RB_SPARE(pon), pon_sts);
+        strlcat(str_buf, reg, sizeof(str_buf));
+
 print_log:
 	strlcat(str_buf, "\n", sizeof(str_buf));
 	printk(str_buf);
